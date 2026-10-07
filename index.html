@@ -1,0 +1,1086 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" id="html-root">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BM cosmetics 🎀</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-pink: #ffb6c1;
+            --deep-pink: #d81b60;
+            --gold: #c5a059;
+            --light-gold: #f4e8c1;
+            --dark-bg: #fff5f8;
+            --text-color: #333333;
+            --white: #ffffff;
+            --shadow: 0 8px 25px rgba(197, 160, 89, 0.12);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Cairo', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--dark-bg);
+            color: var(--text-color);
+            overflow-x: hidden;
+        }
+
+        /* Loading Screen */
+        #loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--white);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+
+        #loading-screen img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid var(--gold);
+            margin-bottom: 20px;
+            box-shadow: 0 0 20px rgba(197, 160, 89, 0.4);
+            animation: pulse 1.5s infinite;
+        }
+
+        #loading-screen h1 {
+            color: var(--deep-pink);
+            font-size: 24px;
+            font-weight: 900;
+            margin-bottom: 20px;
+        }
+
+        .loader-bar {
+            width: 200px;
+            height: 6px;
+            background: #f0f0f0;
+            border-radius: 3px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .loader-bar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 50%;
+            background: linear-gradient(90deg, var(--gold), var(--deep-pink));
+            animation: loading 1.5s infinite ease-in-out;
+        }
+
+        @keyframes loading {
+            0% { left: -50%; }
+            100% { left: 100%; }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        /* Navbar - Professional & Clean */
+        navbar {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(12px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 25px;
+            z-index: 1000;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .nav-brand img {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            border: 2px solid var(--gold);
+            object-fit: cover;
+        }
+
+        .nav-brand span {
+            font-weight: 900;
+            font-size: 18px;
+            color: var(--deep-pink);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 18px;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
+            transition: color 0.3s;
+            white-space: nowrap;
+        }
+
+        .nav-links a:hover {
+            color: var(--gold);
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .lang-btn {
+            background: #f4e8c1;
+            border: 1px solid var(--gold);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-weight: 800;
+            font-size: 13px;
+            cursor: pointer;
+            color: var(--text-color);
+            transition: 0.3s;
+        }
+        .lang-btn:hover {
+            background: var(--gold);
+            color: var(--white);
+        }
+
+        .cart-icon-btn {
+            background: linear-gradient(135deg, var(--gold), #b89742);
+            border: none;
+            padding: 8px 14px;
+            border-radius: 25px;
+            color: var(--white);
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 4px 12px rgba(197, 160, 89, 0.3);
+            white-space: nowrap;
+        }
+
+        /* Floating Quick Checkout Button */
+        #floating-checkout {
+            position: fixed;
+            bottom: 25px;
+            left: 25px;
+            background: var(--deep-pink);
+            color: var(--white);
+            padding: 12px 20px;
+            border-radius: 30px;
+            font-weight: 900;
+            font-size: 15px;
+            box-shadow: 0 6px 20px rgba(216, 27, 96, 0.4);
+            cursor: pointer;
+            z-index: 999;
+            display: none;
+            align-items: center;
+            gap: 8px;
+            animation: bounce 1.5s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 100px auto 40px;
+            padding: 0 15px;
+        }
+
+        .section-title-box {
+            text-align: center;
+            margin: 30px 0 25px;
+        }
+
+        .section-title {
+            color: var(--deep-pink);
+            font-size: 26px;
+            font-weight: 900;
+            display: inline-block;
+            position: relative;
+            padding-bottom: 8px;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: var(--gold);
+            border-radius: 2px;
+        }
+
+        /* Categories Grid */
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 20px;
+        }
+
+        .category-card {
+            height: 240px;
+            border-radius: 50% 50% 16px 16px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            padding-bottom: 20px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 3px solid var(--gold);
+            overflow: hidden;
+        }
+
+        .category-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 30px rgba(197, 160, 89, 0.4);
+        }
+
+        .category-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to top, rgba(0,0,0,0.6), rgba(0,0,0,0.05));
+        }
+
+        .category-card h3 {
+            position: relative;
+            color: var(--white);
+            font-size: 20px;
+            font-weight: 800;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.6);
+        }
+
+        /* Views management */
+        .page-view {
+            display: none;
+        }
+
+        .page-view.active {
+            display: block;
+        }
+
+        .back-btn {
+            background: var(--deep-pink);
+            color: var(--white);
+            border: none;
+            padding: 8px 18px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 14px;
+            margin-bottom: 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 4px 10px rgba(216, 27, 96, 0.2);
+        }
+
+        /* Products Grid */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .product-card {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--light-gold);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .product-img-box {
+            width: 100%;
+            height: 160px;
+            background: #fff0f5;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 12px;
+            border: 2px solid var(--primary-pink);
+            cursor: pointer;
+            position: relative;
+        }
+
+        .product-img-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+
+        .product-img-box img:hover {
+            transform: scale(1.05);
+        }
+
+        .product-card h4 {
+            font-size: 14px;
+            color: var(--text-color);
+            margin-bottom: 8px;
+            font-weight: 800;
+            min-height: 40px;
+        }
+
+        .product-price-box {
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .old-price {
+            text-decoration: line-through;
+            color: #999;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .new-price {
+            color: var(--deep-pink);
+            font-weight: 900;
+            font-size: 16px;
+        }
+
+        .add-to-cart-btn {
+            background: var(--gold);
+            color: var(--white);
+            border: none;
+            padding: 8px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 13px;
+            width: 100%;
+            transition: background 0.3s;
+        }
+
+        .view-cart-mini-btn {
+            background: var(--deep-pink);
+            color: var(--white);
+            border: none;
+            padding: 6px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 12px;
+            width: 100%;
+            margin-top: 6px;
+            display: none;
+        }
+
+        /* Image Lightbox Modal */
+        #lightbox-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            cursor: pointer;
+        }
+        #lightbox-modal img {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 12px;
+            border: 3px solid var(--gold);
+        }
+
+        /* Cart View */
+        .cart-container {
+            background: var(--white);
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            max-width: 500px;
+            margin: 0 auto;
+            border: 1px solid var(--light-gold);
+        }
+
+        .cart-items-list {
+            list-style: none;
+            margin-bottom: 20px;
+            max-height: 220px;
+            overflow-y: auto;
+        }
+
+        .cart-items-list li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #f2f2f2;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .checkout-btn {
+            background: var(--deep-pink);
+            color: var(--white);
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 12px;
+            font-weight: 800;
+            font-size: 15px;
+            cursor: pointer;
+        }
+
+        /* Checkout Form View */
+        .checkout-form-container {
+            background: var(--white);
+            padding: 25px;
+            border-radius: 20px;
+            max-width: 480px;
+            margin: 0 auto;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--light-gold);
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 800;
+            font-size: 14px;
+            color: var(--text-color);
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1.5px solid #e0e0e0;
+            border-radius: 10px;
+            outline: none;
+            font-size: 14px;
+        }
+
+        .payment-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: #fff0f5;
+            padding: 10px 15px;
+            border-radius: 10px;
+            border: 1.5px solid var(--primary-pink);
+            font-weight: 800;
+            color: var(--deep-pink);
+        }
+        .payment-option img {
+            width: 30px;
+            height: 30px;
+            object-fit: contain;
+        }
+
+        .submit-order-btn {
+            background: linear-gradient(135deg, var(--gold), #b89742);
+            color: var(--white);
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 12px;
+            font-weight: 800;
+            font-size: 15px;
+            cursor: pointer;
+        }
+
+        /* Footer & Contact Section */
+        footer {
+            background: var(--white);
+            text-align: center;
+            padding: 30px 15px;
+            margin-top: 50px;
+            border-top: 2px solid var(--light-gold);
+        }
+
+        .social-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 15px;
+            align-items: center;
+        }
+
+        .social-btn {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: 22px;
+            text-decoration: none;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            transition: transform 0.3s;
+            overflow: hidden;
+            background: #ffffff;
+        }
+
+        .social-btn.whatsapp {
+            background: #25d366;
+            color: #ffffff;
+            font-size: 24px;
+        }
+
+        .social-btn img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+            display: block;
+        }
+
+        .social-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .copyright {
+            margin-top: 20px;
+            font-size: 13px;
+            color: var(--text-color);
+            font-weight: 700;
+        }
+
+        /* Mobile Adjustments */
+        @media (max-width: 480px) {
+            navbar {
+                padding: 10px 15px;
+            }
+            .nav-brand span {
+                font-size: 15px;
+            }
+            .nav-brand img {
+                width: 35px;
+                height: 35px;
+            }
+            .nav-links {
+                gap: 10px;
+            }
+            .nav-links a {
+                font-size: 13px;
+            }
+            .cart-icon-btn {
+                padding: 6px 10px;
+                font-size: 12px;
+            }
+            .section-title {
+                font-size: 22px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Loading Screen -->
+    <div id="loading-screen">
+        <img src="https://i.postimg.cc/Vvv9H1mc/IMG-1048.png" alt="BM cosmetics Logo">
+        <h1>BM cosmetics 🎀</h1>
+        <div class="loader-bar"></div>
+    </div>
+
+    <!-- Image Lightbox Modal -->
+    <div id="lightbox-modal" onclick="closeLightbox()">
+        <img id="lightbox-img" src="" alt="Zoomed Product">
+    </div>
+
+    <!-- Floating Checkout Quick Button -->
+    <div id="floating-checkout" onclick="proceedToCheckout()">
+        <i class="fa-solid fa-bag-shopping"></i> <span id="float-text">إتمام الطلب</span> (<span id="float-count">0</span>)
+    </div>
+
+    <!-- Navbar -->
+    <navbar>
+        <div class="nav-brand" onclick="goHomeTop()">
+            <img src="https://i.postimg.cc/Vvv9H1mc/IMG-1048.png" alt="Logo">
+            <span>BM cosmetics 🎀</span>
+        </div>
+        <ul class="nav-links">
+            <li><a onclick="goHomeTop()" id="nav-home">الرئيسية</a></li>
+            <li><a onclick="goProductsSection()" id="nav-products">المنتجات</a></li>
+            <li><a onclick="scrollToContact()" id="nav-contact">التواصل</a></li>
+        </ul>
+        <div class="nav-actions">
+            <button class="lang-btn" onclick="toggleLanguage()" id="lang-toggle-btn">EN</button>
+            <button class="cart-icon-btn" onclick="showCartView()">
+                <i class="fa-solid fa-cart-shopping"></i> (<span id="cart-count">0</span>)
+            </button>
+        </div>
+    </navbar>
+
+    <!-- Main Container -->
+    <div class="container">
+
+        <!-- Home / Categories Section -->
+        <div id="home-section" class="page-view active">
+            <div class="section-title-box">
+                <h2 class="section-title" id="sec-title-cat">أقسام المنتجات</h2>
+            </div>
+            <div class="categories-grid">
+                <div class="category-card" style="background-image: url('https://i.postimg.cc/W49wmhc9/IMG-1049.jpg');" onclick="openCategory('Skin Care')">
+                    <h3>Skin Care</h3>
+                </div>
+                <div class="category-card" style="background-image: url('https://i.postimg.cc/m2xNyvJd/IMG-1050.jpg');" onclick="openCategory('Hair Care')">
+                    <h3>Hair Care</h3>
+                </div>
+                <div class="category-card" style="background-image: url('https://i.postimg.cc/15p0CWZ6/IMG-1051.jpg');" onclick="openCategory('Body Care')">
+                    <h3>Body Care</h3>
+                </div>
+                <div class="category-card" style="background-image: url('https://i.postimg.cc/SKtc23cC/IMG-1052.jpg');" onclick="openCategory('Kids')">
+                    <h3>Kids</h3>
+                </div>
+                <div class="category-card" style="background-image: url('https://i.postimg.cc/Bvw2Lk2k/IMG-1053.jpg');" onclick="openCategory('Korean')">
+                    <h3>Korean</h3>
+                </div>
+            </div>
+        </div>
+
+        <!-- Products Category Page View -->
+        <div id="products-section" class="page-view">
+            <button class="back-btn" onclick="goHomeTop()"><i class="fa-solid fa-arrow-right" id="back-arrow-icon"></i> <span id="back-btn-text">رجوع للأقسام الرئيسية</span></button>
+            <div class="section-title-box">
+                <h2 class="section-title" id="category-title">المنتجات</h2>
+            </div>
+            <div class="products-grid" id="products-grid">
+                <!-- Products Generated via JS -->
+            </div>
+        </div>
+
+        <!-- Cart View -->
+        <div id="cart-section" class="page-view">
+            <button class="back-btn" onclick="goHomeTop()"><i class="fa-solid fa-arrow-right"></i> <span id="cart-back-text">متابعة التسوق</span></button>
+            <div class="cart-container">
+                <h2 id="cart-view-title" style="margin-bottom: 15px; color: var(--deep-pink); text-align: center; font-weight: 900; font-size: 20px;">سلة المشتريات</h2>
+                <ul class="cart-items-list" id="cart-items-list">
+                    <!-- Cart items -->
+                </ul>
+                <button class="checkout-btn" onclick="proceedToCheckout()" id="proceed-checkout-btn">إتمام الطلب</button>
+            </div>
+        </div>
+
+        <!-- Checkout Form View -->
+        <div id="checkout-section" class="page-view">
+            <button class="back-btn" onclick="showCartView()"><i class="fa-solid fa-arrow-right"></i> <span id="checkout-back-text">رجوع للسلة</span></button>
+            <div class="checkout-form-container">
+                <h2 id="checkout-title-text" style="margin-bottom: 20px; color: var(--deep-pink); text-align: center; font-weight: 900; font-size: 20px;">بيانات الشحن والدفع</h2>
+                <div class="form-group">
+                    <label id="label-name">الاسم:</label>
+                    <input type="text" id="cust-name" placeholder="أدخل اسمك الكريم">
+                </div>
+                <div class="form-group">
+                    <label id="label-phone">رقم الهاتف:</label>
+                    <input type="tel" id="cust-phone" placeholder="أدخل رقم هاتفك">
+                </div>
+                <div class="form-group">
+                    <label id="label-address">العنوان:</label>
+                    <input type="text" id="cust-address" placeholder="أدخل العنوان بالتفصيل">
+                </div>
+                <div class="form-group">
+                    <label id="label-payment">طريقة الدفع:</label>
+                    <div class="payment-option">
+                        <img src="https://images.crunchbase.com/image/upload/c_pad,h_170,w_170,f_auto,b_white,q_auto:eco,dpr_1/gmjfq0k3h6f2t6x2l8u8" alt="InstaPay">
+                        <span>InstaPay (انستا باي)</span>
+                    </div>
+                </div>
+                <button class="submit-order-btn" onclick="submitOrder()" id="submit-order-text">إتمام الطلب عبر الواتساب</button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Footer & Contact Section -->
+    <footer id="contact-section">
+        <h3 id="footer-title" style="color: var(--deep-pink); margin-bottom: 8px; font-size: 18px; font-weight: 900;">تواصل معنا</h3>
+        <p id="footer-subtitle" style="font-weight: 700; color: #666; font-size: 13px;">نسعد بخدمتكم دائماً في BM cosmetics 🎀</p>
+        <div class="social-buttons">
+            <a href="https://wa.me/201099872665" target="_blank" class="social-btn whatsapp">
+                <i class="fa-brands fa-whatsapp"></i>
+            </a>
+            <a href="https://www.instagram.com/bm_cosmetics_0?stkn=aDh3NTlxeDV0OTNw" target="_blank" class="social-btn">
+                <img src="https://i.postimg.cc/3wgd7qnQ/IMG-1058.png" alt="Instagram">
+            </a>
+        </div>
+        <div class="copyright">
+            Copyright © AKR. All rights reserved.
+        </div>
+    </footer>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // Language Dictionary
+        let currentLang = 'ar';
+        const translations = {
+            ar: {
+                navHome: "الرئيسية",
+                navProducts: "المنتجات",
+                navContact: "التواصل",
+                secTitleCat: "أقسام المنتجات",
+                backBtnText: "رجوع للأقسام الرئيسية",
+                cartBackText: "متابعة التسوق",
+                checkoutBackText: "رجوع للسلة",
+                cartViewTitle: "سلة المشتريات",
+                proceedCheckoutBtn: "إتمام الطلب",
+                checkoutTitleText: "بيانات الشحن والدفع",
+                labelName: "الاسم:",
+                labelPhone: "رقم الهاتف:",
+                labelAddress: "العنوان:",
+                labelPayment: "طريقة الدفع:",
+                submitOrderText: "إتمام الطلب عبر الواتساب",
+                footerTitle: "تواصل معنا",
+                footerSubtitle: "نسعد بخدمتكم دائماً في BM cosmetics 🎀",
+                emptyCart: "السلة فارغة حالياً",
+                floatText: "إتمام الطلب",
+                addBtn: "إضافة للسلة",
+                viewCartMini: "عرض السلة"
+            },
+            en: {
+                navHome: "Home",
+                navProducts: "Products",
+                navContact: "Contact",
+                secTitleCat: "Product Categories",
+                backBtnText: "Back to Categories",
+                cartBackText: "Continue Shopping",
+                checkoutBackText: "Back to Cart",
+                cartViewTitle: "Shopping Cart",
+                proceedCheckoutBtn: "Proceed to Checkout",
+                checkoutTitleText: "Shipping & Payment Details",
+                labelName: "Name:",
+                labelPhone: "Phone Number:",
+                labelAddress: "Address:",
+                labelPayment: "Payment Method:",
+                submitOrderText: "Complete Order via WhatsApp",
+                footerTitle: "Contact Us",
+                footerSubtitle: "We are always happy to serve you at BM cosmetics 🎀",
+                emptyCart: "Your cart is currently empty",
+                floatText: "Checkout",
+                addBtn: "Add to Cart",
+                viewCartMini: "View Cart"
+            }
+        };
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'ar' ? 'en';
+            document.getElementById('html-root').setAttribute('dir', currentLang === 'ar' ? 'rtl' : 'ltr');
+            document.getElementById('html-root').setAttribute('lang', currentLang);
+            document.getElementById('lang-toggle-btn').innerText = currentLang === 'ar' ? 'EN' : 'AR';
+            
+            // Update static texts
+            document.getElementById('nav-home').innerText = translations[currentLang].navHome;
+            document.getElementById('nav-products').innerText = translations[currentLang].navProducts;
+            document.getElementById('nav-contact').innerText = translations[currentLang].navContact;
+            document.getElementById('sec-title-cat').innerText = translations[currentLang].secTitleCat;
+            document.getElementById('back-btn-text').innerText = translations[currentLang].backBtnText;
+            document.getElementById('cart-back-text').innerText = translations[currentLang].cartBackText;
+            document.getElementById('checkout-back-text').innerText = translations[currentLang].checkoutBackText;
+            document.getElementById('cart-view-title').innerText = translations[currentLang].cartViewTitle;
+            document.getElementById('proceed-checkout-btn').innerText = translations[currentLang].proceedCheckoutBtn;
+            document.getElementById('checkout-title-text').innerText = translations[currentLang].checkoutTitleText;
+            document.getElementById('label-name').innerText = translations[currentLang].labelName;
+            document.getElementById('label-phone').innerText = translations[currentLang].labelPhone;
+            document.getElementById('label-address').innerText = translations[currentLang].labelAddress;
+            document.getElementById('label-payment').innerText = translations[currentLang].labelPayment;
+            document.getElementById('submit-order-text').innerText = translations[currentLang].submitOrderText;
+            document.getElementById('footer-title').innerText = translations[currentLang].footerTitle;
+            document.getElementById('footer-subtitle').innerText = translations[currentLang].footerSubtitle;
+            document.getElementById('float-text').innerText = translations[currentLang].floatText;
+
+            // Re-render active category if open
+            if(window.activeCategoryName) {
+                openCategory(window.activeCategoryName);
+            }
+        }
+
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                const loader = document.getElementById('loading-screen');
+                loader.style.opacity = '0';
+                setTimeout(() => loader.style.display = 'none', 500);
+            }, 1200);
+        });
+
+        let cart = [];
+
+        // Korean Products Database with Exact Links & Prices
+        const koreanProducts = [
+            {
+                name: "Arencia Eraser Shot Glycolic Acid Booster 30ml",
+                image: "https://i.postimg.cc/Hk1sgjn6/8f7fc898-5120-45ed-a68c-70b677351b64.jpg",
+                oldPrice: "1200 EGP",
+                newPrice: "899 EGP"
+            },
+            {
+                name: "Arencia PDRN Booster Shot 30ml",
+                image: "https://i.postimg.cc/XJqn8C11/2694f912-b0e0-4119-80be-8d99d76cfeb4.jpg",
+                oldPrice: "1200 EGP",
+                newPrice: "899 EGP"
+            },
+            {
+                name: "Arencia TXA Booster Shot 30ml",
+                image: "https://i.postimg.cc/NGyHG9GG/ac3cfee1-28a0-4c9a-a5b8-3c5841458ca2.jpg",
+                oldPrice: "1200 EGP",
+                newPrice: "899 EGP"
+            },
+            {
+                name: "Arencia NAD+ Booster Shot 30ml",
+                image: "https://i.postimg.cc/7Y0J7F24/6bb737d5-5395-455a-bb59-de664ce07666.jpg",
+                oldPrice: "1200 EGP",
+                newPrice: "899 EGP"
+            },
+            {
+                name: "Arencia Pore Melt Mochi Cleansing Oil 200ml",
+                image: "https://i.postimg.cc/KYv164pC/c0a2fb13-4ce4-468f-a6a6-10c08aadf715.jpg",
+                oldPrice: "1200 EGP",
+                newPrice: "899 EGP"
+            },
+            {
+                name: "Arencia Fresh Green Rice Mochi Cleanser – 120g",
+                image: "https://i.postimg.cc/02Rb8VBs/823d9175-ad2b-4ed6-bbb7-a8f01d0b371a.jpg",
+                oldPrice: "1300 EGP",
+                newPrice: "999 EGP"
+            },
+            {
+                name: "Arencia Fresh Blue Hyssop Rice Mochi Cleanser – 120g",
+                image: "https://i.postimg.cc/bYbwFQNQ/cc7cc128-22b0-41d6-93bb-d4019e329745.jpg",
+                oldPrice: "1400 EGP",
+                newPrice: "1150 EGP"
+            },
+            {
+                name: "Arencia Fresh Rosehip Rice Mochi Cleanser 120g",
+                image: "https://i.postimg.cc/qvBBRScw/af205bc8-e021-48ec-8c4d-5b0c34254c58.jpg",
+                oldPrice: "1400 EGP",
+                newPrice: "1150 EGP"
+            },
+            {
+                name: "Arencia Eraser Soothing Cream – 50ml",
+                image: "https://i.postimg.cc/PJkTkRr8/6d5e7f67-647d-4e38-a231-3e031f5db9c7.jpg",
+                oldPrice: "1400 EGP",
+                newPrice: "1150 EGP"
+            },
+            {
+                name: "Arencia Extra Special Treatment Item",
+                image: "https://i.postimg.cc/x1FQdC1v/7e4d8905-9d47-41d9-89e8-5a22a10e14c8.jpg",
+                oldPrice: "1350 EGP",
+                newPrice: "1100 EGP"
+            }
+        ];
+
+        function hideAllViews() {
+            document.querySelectorAll('.page-view').forEach(el => el.classList.remove('active'));
+        }
+
+        function goHomeTop() {
+            hideAllViews();
+            document.getElementById('home-section').classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function goProductsSection() {
+            hideAllViews();
+            document.getElementById('home-section').classList.add('active');
+            document.getElementById('sec-title-cat').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function scrollToContact() {
+            hideAllViews();
+            document.getElementById('home-section').classList.add('active');
+            document.getElementById('contact-section').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function openCategory(categoryName) {
+            window.activeCategoryName = categoryName;
+            hideAllViews();
+            document.getElementById('products-section').classList.add('active');
+            document.getElementById('category-title').innerText = categoryName;
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            
+            let grid = document.getElementById('products-grid');
+            grid.innerHTML = '';
+            
+            if (categoryName === 'Korean') {
+                koreanProducts.forEach((prod, index) => {
+                    grid.innerHTML += `
+                        <div class="product-card">
+                            <div class="product-img-box" onclick="openLightbox('${prod.image}')">
+                                <img src="${prod.image}" alt="${prod.name}">
+                            </div>
+                            <h4>${prod.name}</h4>
+                            <div class="product-price-box">
+                                <span class="old-price">${prod.oldPrice}</span>
+                                <span class="new-price">${prod.newPrice}</span>
+                            </div>
+                            <button class="add-to-cart-btn" onclick="addToCart('${prod.name.replace(/'/g, "")}', '${prod.newPrice}', this)">${translations[currentLang].addBtn}</button>
+                            <button class="view-cart-mini-btn" onclick="showCartView()">${translations[currentLang].viewCartMini}</button>
+                        </div>
+                    `;
+                });
+            } else {
+                for (let i = 1; i <= 5; i++) {
+                    let pName = `${categoryName} Product ${i}`;
+                    let pPrice = `${(i * 60) + 120} EGP`;
+                    let pOldPrice = `${(i * 60) + 220} EGP`;
+                    let pImg = 'https://i.postimg.cc/Vvv9H1mc/IMG-1048.png';
+                    grid.innerHTML += `
+                        <div class="product-card">
+                            <div class="product-img-box" onclick="openLightbox('${pImg}')">
+                                <img src="${pImg}" alt="${pName}">
+                            </div>
+                            <h4>منتج ${i} مميز - ${categoryName}</h4>
+                            <div class="product-price-box">
+                                <span class="old-price">${pOldPrice}</span>
+                                <span class="new-price">${pPrice}</span>
+                            </div>
+                            <button class="add-to-cart-btn" onclick="addToCart('${pName}', '${pPrice}', this)">${translations[currentLang].addBtn}</button>
+                            <button class="view-cart-mini-btn" onclick="showCartView()">${translations[currentLang].viewCartMini}</button>
+                        </div>
+                    `;
+                }
+            }
+        }
+
+        // Lightbox Functions
+        function openLightbox(imgSrc) {
+            document.getElementById('lightbox-img').src = imgSrc;
+            document.getElementById('lightbox-modal').style.display = 'flex';
+        }
+
+        function closeLightbox() {
+            document.getElementById('lightbox-modal').style.display = 'none';
+        }
+
+        function addToCart(name, price, btnElement) {
+            cart.push({ name, price });
+            let count = cart.length;
+            document.getElementById('cart-count').innerText = count;
+            document.getElementById('float-count').innerText = count;
+            document.getElementById('floating-checkout').style.display = 'flex';
+            
+            let viewBtn = btnElement.nextElementSibling;
+            if(viewBtn) viewBtn.style.display = 'block';
+        }
+
+        function showCartView() {
+            hideAllViews();
+            document.getElementById('cart-section').classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            let list = document.getElementById('cart-items-list');
+            list.innerHTML = '';
+            if (cart.length === 0) {
+                list.innerHTML = `<p style="text-align:center; color:#888; font-weight:700; padding: 15px; font-size: 14px;">${translations[currentLang].emptyCart}</p>`;
+                return;
+            }
+            cart.forEach((item, idx) => {
+                list.innerHTML += `
+                    <li>
+                        <span>${item.name}</span>
+                        <div style="display:flex; align-items:center; gap:10px;">
+                            <span style="color: var(--gold); font-weight:900;">${item.price}</span>
+                            <button onclick="removeFromCart(${idx})" style="background:#ff4d4d; color:white; border:none; border-radius:50%; width:24px; height:24px; cursor:pointer; font-weight:bold;">×</button>
+                        </div>
+                    </li>
+                `;
+            });
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            let count = cart.length;
+            document.getElementById('cart-count').innerText = count;
+            document.getElementById('float-count').innerText = count;
+            if(count === 0) {
+                document.getElementById('floating-checkout').style.display = 'none';
+            }
+            showCartView();
+        }
+
+        function proceedToCheckout() {
+            if (cart.length === 0) {
+                alert(currentLang === 'ar' ? 'سلتك فارغة!' : 'Your cart is empty!');
+                return;
+            }
+            hideAllViews();
+            document.getElementById('checkout-section').classList.add('active');
+            document.getElementById('floating-checkout').style.display = 'none';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function submitOrder() {
+            let name = document.getElementById('cust-name5' || 'cust-name').value;
+            let phone = document.getElementById('cust-phone').value;
+            let address = document.getElementById('cust-address').value;
+
+            if(!name || !phone || !address) {
+                alert(currentLang === 'ar' ? 'من فضلك املأ جميع البيانات المطلوبة للشحن' : 'Please fill in all shipping details');
+                return;
+            }
+
+            let orderDetails = cart.map(item => `- ${item.name} (${item.price})`).join('%0a');
+            let message = `مرحباً، اريد طلب المنتجات الآتية:%0a${orderDetails}%0a%0aالاسم: ${name}%0aالهاتف: ${phone}%0aالعنوان: ${address}%0aطريقة الدفع: InstaPay`;
+            
+            let whatsappUrl = `https://wa.me/201099872665?text=${message}`;
+            window.open(whatsappUrl, '_blank');
+        }
+    </script>
+</body>
+</html>
